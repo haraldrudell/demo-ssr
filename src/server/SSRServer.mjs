@@ -7,6 +7,7 @@ import koaCors from 'koa2-cors'
 import logger from 'koa-logger'
 import Router from 'koa-router'
 import koaStatic from 'koa-static'
+import koaMount from 'koa-mount'
 
 import http2 from 'http2'
 
@@ -14,11 +15,10 @@ export default class SSRServer {
   static scheme = 'https'
 
   constructor(o) {
-    const {origin = '*', http2Options, handler, staticFs} = Object(o)
+    const {origin = '*', http2Options, handler, staticFs, staticUri} = Object(o)
     const router = this._getRouter({handler})
-    const app = this._addMiddleware({app: new Koa(), origin})
-    .use(router.routes())
-    .use(koaStatic(staticFs))
+    const app = this._addStatic({app: this._addMiddleware({app: new Koa(), origin})
+      .use(router.routes()), staticFs, staticUri})
     .use(router.allowedMethods())
     const http2server = http2.createSecureServer(http2Options, app.callback())
     Object.assign(this, {app, http2server})
@@ -38,6 +38,15 @@ export default class SSRServer {
         ctx.set('Content-Type', 'text/html')
         ctx.body = stream
       })
+  }
+
+  _addStatic({app, staticFs, staticUri}) {
+    if (staticFs) {
+      let ware = koaStatic(staticFs)
+      if (staticUri && staticUri !== '/') ware = koaMount(staticUri, ware)
+      app = app.use(ware)
+    }
+    return app
   }
 
   async listen(arg) {
