@@ -8,7 +8,7 @@ const {Readable} = streamImport
 export default class ArrayStream extends Readable {
   constructor({array: a0, string}) {
     super(string && {encoding: 'utf8'})
-    const array = Array.isArray(a0) ? a0 : [String(a0 || '')]
+    const array = Array.isArray(a0) ? a0.slice() : [String(a0 || '')]
     Object.assign(this, {array})
   }
 
