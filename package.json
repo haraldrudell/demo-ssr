@@ -1,6 +1,7 @@
 {
   "name": "demo-ssr",
   "version": "0.0.1",
+  "author": "Harald Rudell <harald.rudell@gmail.com> (http://haraldrudell.com)",
   "private": true,
   "main": "buildbin/server",
   "dependencies": {
