@@ -1,6 +1,6 @@
 <html lang=en>
   <meta charset=utf-8>
-  <h1>Server-Side Renderinng Demonstration Project</h1>
+  <h1>Server-Side Rendering Demonstration Project</h1>
   &emsp;
   <p><a href=https://haraldrudell.github.io/ssr/>Click here to see this project live: https://haraldrudell.github.io/ssr/</a></p>
   &emsp;
